@@ -1,5 +1,5 @@
 class Profile {
-  int? id; // Ganti dari String ke int?
+  int? id;
   String name;
   String phone;
   String profilePhoto;
@@ -15,7 +15,6 @@ class Profile {
     required this.quote,
   });
 
-  // JSON mapping untuk SQLite (Map<String, dynamic>)
   factory Profile.fromMap(Map<String, dynamic> map) {
     return Profile(
       id: map['id'],
@@ -29,18 +28,13 @@ class Profile {
 
   Map<String, dynamic> toMap() {
     final map = {
+      'id': id,
       'name': name,
       'phone': phone,
       'profilePhoto': profilePhoto,
       'coverPhoto': coverPhoto,
       'quote': quote,
-      'id': id,
     };
-
-    // // Tambahkan id jika tidak null (saat update misalnya)
-    // if (id != null) {
-    //   map['id'] = id;
-    // }
 
     return map;
   }
