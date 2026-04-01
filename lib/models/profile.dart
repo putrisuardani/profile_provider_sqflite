@@ -15,6 +15,24 @@ class Profile {
     required this.quote,
   });
 
+  Profile copyWith({
+    int? id,
+    String? name,
+    String? phone,
+    String? profilePhoto,
+    String? coverPhoto,
+    String? quote,
+  }) {
+    return Profile(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+      profilePhoto: profilePhoto ?? this.profilePhoto,
+      coverPhoto: coverPhoto ?? this.coverPhoto,
+      quote: quote ?? this.quote,
+    );
+  }
+
   factory Profile.fromMap(Map<String, dynamic> map) {
     return Profile(
       id: map['id'],
