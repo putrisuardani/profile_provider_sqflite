@@ -80,17 +80,7 @@ class _ListProfileState extends State<ListProfile> {
         onPressed: () async {
           final provider = Provider.of<ProfileProvider>(context, listen: false);
 
-          final int random = DateTime.now().millisecondsSinceEpoch % 100;
-          final newProfile = Profile(
-            name: "Putri $random",
-            phone: "+62812$random",
-            profilePhoto: "https://i.pravatar.cc/150?img=$random",
-            coverPhoto: "https://picsum.photos/600/200?random=$random",
-            quote: "Semangat terus yaa 💪",
-            id: null,
-          );
-
-          await provider.addProfile(newProfile);
+          await provider.addProfile();
         },
         child: const Icon(Icons.add),
       ),

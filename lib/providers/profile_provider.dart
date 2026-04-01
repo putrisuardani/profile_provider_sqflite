@@ -22,26 +22,34 @@ class ProfileProvider with ChangeNotifier {
   }
 
   Future<void> fetchProfiles() async {
-    final db = await DBHelper.database;
-    final data = await db.query('profiles');
-    _profiles = data.map((item) => Profile.fromMap(item)).toList();
-    notifyListeners();
+    try {
+      _profiles = await DBHelper.getProfiles();
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error fetching profiles: $e');
+    }
   }
 
-  Future<void> addProfile(Profile profile) async {
-    final db = await DBHelper.database;
-    final id = await db.insert('profiles', profile.toMap());
-    _profiles.add(
-      Profile(
-        id: id,
-        name: profile.name,
-        phone: profile.phone,
-        profilePhoto: profile.profilePhoto,
-        coverPhoto: profile.coverPhoto,
-        quote: profile.quote,
-      ),
-    );
-    notifyListeners();
+  Future<void> addProfile() async {
+    try {
+      final int random = DateTime.now().millisecondsSinceEpoch % 100;
+      final profileWithoutID = Profile(
+        name: "Putri $random",
+        phone: "+62812$random",
+        profilePhoto: "https://i.pravatar.cc/150?img=$random",
+        coverPhoto: "https://picsum.photos/600/200?random=$random",
+        quote: "Semangat terus yaa 💪",
+        id: null,
+      );
+      final int insertedId = await DBHelper.insertProfile(profileWithoutID);
+      final newProfile = profileWithoutID.copyWith(id: insertedId);
+
+      DBHelper.insertProfile(newProfile);
+      _profiles.add(newProfile);
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error adding profile: $e');
+    }
   }
 
   Future<void> updateProfile(int id, Profile profile) async {
